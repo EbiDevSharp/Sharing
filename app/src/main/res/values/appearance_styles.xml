@@ -1,0 +1,9 @@
+<resources>
+  <style name="ShareTitle" parent="TextAppearance.AppCompat.Headline">
+    <item name="android:textSize">30sp</item>
+    <item name="android:textStyle">bold</item>
+  </style>
+  <style name="ShareNavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+    <item name="android:color">@color/ui_active</item>
+  </style>
+</resources>

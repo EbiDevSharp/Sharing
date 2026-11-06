@@ -235,23 +235,25 @@ public class ServerService extends Service {
     }
 
     public static String getIpAddress() {
+        String fallback = null;
         try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
-                        return inetAddress.getHostAddress();
-                    }
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface network = en.nextElement();
+                String name = network.getName().toLowerCase(Locale.ROOT);
+                if (!network.isUp() || network.isLoopback() || name.startsWith("tun") || name.startsWith("wg") || name.startsWith("ppp") || name.startsWith("rmnet") || name.startsWith("ccmni")) continue;
+                for (Enumeration<InetAddress> addresses = network.getInetAddresses(); addresses.hasMoreElements();) {
+                    InetAddress address = addresses.nextElement();
+                    if (!(address instanceof Inet4Address) || address.isLoopbackAddress() || address.isLinkLocalAddress()) continue;
+                    boolean lanInterface = name.startsWith("wlan") || name.startsWith("swlan") || name.startsWith("ap") || name.startsWith("eth");
+                    if (lanInterface) return address.getHostAddress();
+                    if (address.isSiteLocalAddress()) fallback = address.getHostAddress();
                 }
             }
         } catch (SocketException ex) {
-            if (ex.getMessage() == null) return null;
-            Log.e("MYLOG", ex.getMessage());
+            Log.e("Sharing", "Unable to enumerate LAN interfaces", ex);
         }
-        return null;
+        return fallback;
     }
-
 
     private void stopForegroundAndNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

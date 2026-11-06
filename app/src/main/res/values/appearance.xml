@@ -1,0 +1,15 @@
+<resources>
+  <color name="ui_text">#25243B</color>
+  <color name="ui_muted">#626079</color>
+  <color name="ui_glass">#CFFFFFFF</color>
+  <color name="ui_stroke">#1C514373</color>
+  <color name="ui_nav">#F2FFFFFF</color>
+  <color name="ui_active">#D9EEF4</color>
+  <color name="ui_cyan">#007C91</color>
+  <color name="ui_red">#BE3546</color>
+  <color name="ui_teal">#007F76</color>
+  <color name="ui_violet">#7050BD</color>
+  <color name="ui_gold">#926000</color>
+  <color name="ui_green">#157D44</color>
+  <color name="ui_badge">#BE3546</color>
+</resources>

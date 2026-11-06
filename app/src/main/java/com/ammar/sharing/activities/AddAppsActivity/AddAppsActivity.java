@@ -45,6 +45,7 @@ public class AddAppsActivity extends AppCompatActivity {
             getWindow().setBackgroundDrawableResource(R.drawable.gradient_background_light);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+        com.ammar.sharing.common.utils.AppAppearance.prepare(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_apps);
         appBar = findViewById(R.id.TB_Toolbar);

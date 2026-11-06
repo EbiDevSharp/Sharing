@@ -44,7 +44,7 @@
             app:navigationIcon="@drawable/ic_back"
             android:backgroundTint="@android:color/transparent"
             android:elevation="0dp"
-            app:titleTextColor="@color/white"
+            app:titleTextColor="@color/ui_text"
             app:title="Streaming" />
     </com.google.android.material.appbar.AppBarLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

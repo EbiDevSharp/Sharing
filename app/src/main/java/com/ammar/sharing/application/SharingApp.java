@@ -33,12 +33,12 @@ public class SharingApp extends Application {
         super.onCreate();
         _isDebuggable = (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
         FileUtils.init(this);
+        Utils.setupUtils(this);
 
         String hello = Utils.hello("test hey hi");
         Log.d("TEST", hello);
 
        mInitExecutor.execute(() -> {
-            Utils.setupUtils(this);
             WebAppUtils.init(mInitExecutor);
             SharedPreferences settingsPref = getSharedPreferences(Consts.PREF_SETTINGS, MODE_PRIVATE);
             Server.PORT_NUMBER = settingsPref.getInt(Consts.PREF_FIELD_SERVER_PORT, 2999);
@@ -48,6 +48,19 @@ public class SharingApp extends Application {
        });
 
         Consts.systemLocale = Locale.getDefault();
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            public void onActivityCreated(android.app.Activity a, android.os.Bundle state) {}
+            public void onActivityStarted(android.app.Activity a) {}
+            public void onActivityResumed(android.app.Activity a) {
+                android.view.View root = a.getWindow().getDecorView();
+                root.setLayoutDirection(android.text.TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()));
+                com.ammar.sharing.common.utils.AppAppearance.apply(root);
+            }
+            public void onActivityPaused(android.app.Activity a) {}
+            public void onActivityStopped(android.app.Activity a) {}
+            public void onActivitySaveInstanceState(android.app.Activity a, android.os.Bundle state) {}
+            public void onActivityDestroyed(android.app.Activity a) {}
+        });
         Consts.langCodes = getResources().getStringArray(R.array.lang_codes);
 
 

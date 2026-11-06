@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:background="@android:color/transparent"
         app:tabBackground="@android:color/transparent"
-        app:tabTextColor="@color/white"
+        app:tabTextColor="@color/ui_muted"
         app:tabSelectedTextColor="@color/colorSecondary"
         app:tabIndicatorColor="@color/colorSecondary"
         app:tabRippleColor="@color/colorSecondary"/>

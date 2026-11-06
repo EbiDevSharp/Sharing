@@ -106,26 +106,13 @@ public class Utils {
         return byteArrayOutputStream.toString("UTF-8");
     }
 
-    public static native byte[] encodeTextToQR(String text);
+    public static byte[] encodeTextToQR(String text) { return QrCodeEncoder.encode(text); }
 
 
     public static Bitmap QrCodeArrayToBitmap(byte[] qrCodeBytes, boolean darkMode) {
-        int qrColor;
-        if (darkMode)
-            qrColor = Color.WHITE;
-        else
-            qrColor = Color.BLACK;
-
-        int size = (int) Math.sqrt(qrCodeBytes.length);
-        Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_4444);
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                int pixel = qrCodeBytes[size * j + i] == 1 ? qrColor : Color.TRANSPARENT;
-                bitmap.setPixel(j, i, pixel);
-            }
-        }
-
-        return getResizedBitmap(bitmap, 5000, 5000);
+        int[] pixels = QrCodeEncoder.pixels(qrCodeBytes);
+        int side = (int) Math.sqrt(pixels.length);
+        return Bitmap.createBitmap(pixels, side, side, Bitmap.Config.ARGB_8888);
     }
 
     public static Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {

@@ -1,34 +1,23 @@
 package com.ammar.sharing.activities.AddAppsAndFilesActivity.data;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
+import com.ammar.sharing.common.utils.AppSearch;
 
-import androidx.core.content.res.ResourcesCompat;
-
-import com.ammar.sharing.R;
-import com.ammar.sharing.common.utils.Utils;
-
+/** Lightweight metadata. Icons are loaded only for visible rows. Selection belongs to one picker. */
 public class AppData {
-    public AppData(String packageName, boolean hasSplits, String label, Drawable icon) {
+    public AppData(String packageName, boolean hasSplits, String label) {
         this.packageName = packageName;
         this.hasSplits = hasSplits;
         this.label = label;
-        int size = (int) Utils.dpToPx(50);
-        if( hasSplits ) {
-            Drawable[] layers = new Drawable[2];
-            layers[0] = icon;
-            layers[1] = ResourcesCompat.getDrawable(Utils.getRes(), R.drawable.banner_splits, null);
-            LayerDrawable layerDrawable = new LayerDrawable(layers);
-            this.icon = Bitmap.createScaledBitmap( Utils.drawableToBitmap(layerDrawable), size, size, true );
-        } else {
-            this.icon = Bitmap.createScaledBitmap( Utils.drawableToBitmap(icon), size, size, true );
-        }
+        this.searchKey = AppSearch.normalize(label + " " + packageName);
     }
-
+    public AppData(String packageName, boolean hasSplits, String label, String source) {
+        this(packageName,hasSplits,label);
+        try { android.system.StructStat stat=android.system.Os.stat(source); size=stat.st_size; modified=stat.st_mtime*1000; } catch(android.system.ErrnoException ignored) {}
+    }
+    public long size,modified;
     public final String packageName;
-    public final Bitmap icon;
     public final String label;
+    public final String searchKey;
     public final boolean hasSplits;
-    public boolean isChecked = false;
+    public boolean isChecked;
 }

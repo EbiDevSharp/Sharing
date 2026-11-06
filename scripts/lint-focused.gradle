@@ -1,0 +1,7 @@
+gradle.beforeProject { p ->
+    ['com.android.application', 'com.android.library'].each { plugin ->
+        p.plugins.withId(plugin) {
+            p.android.lint.checkOnly = ['NewApi', 'StringFormatMatches', 'ResourceType', 'WrongConstant', 'CheckResult', 'InvalidId', 'UnknownId'] as Set
+        }
+    }
+}

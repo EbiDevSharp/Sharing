@@ -1,0 +1,22 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+<string name="grid_view">Grid</string>
+<string name="list_view">List</string>
+<string name="date_modified">Date modified</string>
+<string name="size">Size</string>
+<string name="name">Name</string>
+<string name="type">Type</string>
+<string name="ascending">Ascending · oldest / smallest first</string>
+<string name="descending">Descending · newest / largest first</string>
+<string name="select_all">Select all</string>
+<string name="add_to_share">Add to share  ✓</string>
+<string name="select_this_file">Select this file</string>
+<string name="folder">Folder</string>
+<string name="select_named">Select %1$s</string>
+<string name="deselect_named">Deselect %1$s</string>
+<string name="rewind_ten">−10 s</string>
+<string name="forward_ten">+10 s</string>
+<string name="play">Play</string>
+<string name="pause">Pause</string>
+<string name="loading_preview">Preparing preview…</string>
+<string name="preview_unavailable">Preview is unavailable for this file. You can still select it.</string>
+</resources>

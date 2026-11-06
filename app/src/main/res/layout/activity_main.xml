@@ -43,33 +43,42 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:menu="@menu/menu_share"
-                app:titleTextColor="@color/white"
+                app:titleTextColor="@color/ui_text"
+                app:subtitleTextColor="@color/ui_muted"
+                app:title="@string/share"
+                app:titleTextAppearance="@style/ShareTitle"
+                android:paddingVertical="10dp"
                 tools:title="TitleHolder" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingStart="24dp" android:paddingEnd="24dp" android:paddingBottom="12dp" android:text="@string/share_subtitle" android:textSize="14sp" android:textColor="@color/ui_muted"/>
         </com.google.android.material.appbar.AppBarLayout>
 
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/MainActivityFragmentContainer"
+            android:layout_marginBottom="96dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <com.google.android.material.bottomappbar.BottomAppBar
+        <FrameLayout
             android:id="@+id/BAB_BottomAppBar"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/floating_nav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:contentInsetEnd="0dp"
-            app:contentInsetStart="0dp">
+            android:layout_gravity="bottom">
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/BottomNavView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 app:elevation="0dp"
-                app:menu="@menu/bottom_bar_send" />
+                app:menu="@menu/bottom_bar_send"
+                app:labelVisibilityMode="labeled"
+                app:itemActiveIndicatorStyle="@style/ShareNavIndicator" />
 
-        </com.google.android.material.bottomappbar.BottomAppBar>
+        </FrameLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </FrameLayout>

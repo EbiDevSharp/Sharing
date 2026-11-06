@@ -78,7 +78,7 @@
     <string name="share">Поделиться</string>
     <string name="choose_language">Выберите язык</string>
     <string name="installer_note">После отправки файла APKS на другое устройство и отправки этого приложения на другое удалённое устройство и открытия этой страницы для установки файла APKS.</string>
-    <string name="selected_num">Выбрано %1$s</string>
+    <string name="selected_num">Выбрано %1$d</string>
     <string name="download_all">Скачать все</string>
     <string name="images">Изображения</string>
     <string name="unsupported_data">Неподдерживаемые данные</string>

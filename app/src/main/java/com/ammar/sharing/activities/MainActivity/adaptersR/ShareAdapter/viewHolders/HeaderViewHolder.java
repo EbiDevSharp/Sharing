@@ -52,33 +52,33 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
 
     public HeaderViewHolder(@NonNull View itemView, BrowserShareFragment fragment) {
         super(itemView);
+        com.ammar.sharing.common.utils.AppAppearance.apply(itemView);
         this.fragment = fragment;
-        ImageButton addItemsB = itemView.findViewById(R.id.B_AddItems);
-        ImageButton streamingB = itemView.findViewById(R.id.B_Stream);
-        ImageButton messagesB = itemView.findViewById(R.id.B_Messages);
-        AppCompatButton QRCodeB = itemView.findViewById(R.id.B_ShowAddress);
+        View addItemsB = itemView.findViewById(R.id.B_AddItems);
+        View streamingB = itemView.findViewById(R.id.B_Stream);
+        View messagesB = itemView.findViewById(R.id.B_Messages);
+        View QRCodeB = itemView.findViewById(R.id.B_ShowAddress);
 
-        ImageButton showSelected = itemView.findViewById(R.id.B_ShowSelected);
-        ImageButton showUsersB = itemView.findViewById(R.id.B_ShowUsers);
+        View showSelected = itemView.findViewById(R.id.B_ShowSelected);
+        View showUsersB = itemView.findViewById(R.id.B_ShowUsers);
         // setup badges
         TextView usersNumTV = itemView.findViewById(R.id.TV_NumberUsers);
         TextView filesNumTV = itemView.findViewById(R.id.TV_NumberSelected);
         messagesNumTV = itemView.findViewById(R.id.TV_NumberMessages);
 
-        Button toggleServerButton = itemView.findViewById(R.id.B_ToggleServer);
+        ImageButton toggleServerButton = itemView.findViewById(R.id.B_ToggleServer);
         toggleServerButton.setOnClickListener((button) -> {
             Intent serviceIntent = new Intent(itemView.getContext(), ServerService.class);
             serviceIntent.setAction(ServerService.ACTION_TOGGLE_SERVER);
             itemView.getContext().startService(serviceIntent);
         });
         Data.serverStatusObserver.observe(fragment.getViewLifecycleOwner(), running -> {
-            if (running) {
-                ViewCompat.setBackgroundTintList(toggleServerButton, ColorStateList.valueOf(itemView.getContext().getResources().getColor(R.color.status_on)));
-                toggleServerButton.setText(R.string.server_on);
-            } else {
-                ViewCompat.setBackgroundTintList(toggleServerButton, ColorStateList.valueOf(itemView.getContext().getResources().getColor(R.color.status_off)));
-                toggleServerButton.setText(R.string.server_off);
-            }
+            ((TextView) itemView.findViewById(R.id.TV_ServerStatus)).setText(running ? R.string.status_on : R.string.status_off);
+            ((TextView) itemView.findViewById(R.id.TV_ServerStatus)).setTextColor(itemView.getResources().getColor(running ? R.color.ui_green : R.color.ui_red));
+            ((TextView) itemView.findViewById(R.id.TV_ServerTitle)).setText(running ? R.string.sharing_live : R.string.start_sharing);
+            ((TextView) itemView.findViewById(R.id.TV_ServerHint)).setText(running ? R.string.sharing_live_hint : R.string.pick_items_hint);
+            toggleServerButton.setSelected(running);
+            toggleServerButton.setContentDescription(itemView.getContext().getString(running ? R.string.stop_sharing : R.string.start_sharing));
             SharedInfo.sIsWebServerOn = running;
         });
 
@@ -115,7 +115,8 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
             usersNumTV.setVisibility(View.VISIBLE);
         }
 
-        addItemsB.setOnClickListener((button) -> this.fragment.launcher.launch(new Intent(itemView.getContext(), AddAppsAndFilesActivity.class)));
+        addItemsB.setOnClickListener((button) -> this.fragment.launcher.launch(new Intent(itemView.getContext(), AddAppsAndFilesActivity.class).putExtra(AddAppsAndFilesActivity.EXTRA_INITIAL_TAB, 1)));
+        itemView.findViewById(R.id.B_AddFiles).setOnClickListener(button -> this.fragment.launcher.launch(new Intent(itemView.getContext(), AddAppsAndFilesActivity.class).putExtra(AddAppsAndFilesActivity.EXTRA_INITIAL_TAB, 0)));
         streamingB.setOnClickListener((button) -> itemView.getContext().startActivity(new Intent(itemView.getContext(), StreamingActivity.class)));
         messagesB.setOnClickListener((button) -> {
             Intent intent = new Intent(itemView.getContext(), MessagesActivity.class);
@@ -273,7 +274,10 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
             byte[] qrCodeBytes = Utils.encodeTextToQR(link);
             Bitmap qrCodeBitmap = Utils.QrCodeArrayToBitmap(qrCodeBytes, sDarkMode);
             // Display the bitmap in an ImageView or any other suitable view
-            QRImageIV.setImageBitmap(qrCodeBitmap);
+            android.graphics.drawable.BitmapDrawable image = new android.graphics.drawable.BitmapDrawable(itemView.getResources(), qrCodeBitmap);
+            image.setFilterBitmap(false);
+            image.setAntiAlias(false);
+            QRImageIV.setImageDrawable(image);
         } else {
             QRCodeErrorText.setText(R.string.connect_to_wifi_or_hotspot);
             QRCodeErrorText.setVisibility(View.VISIBLE);

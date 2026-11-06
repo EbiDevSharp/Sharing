@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/white"
+        app:titleTextColor="@color/ui_text"
         app:title="@string/apks_installer_experimental" />
 
     <LinearLayout
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pick_apks_file"
-            android:textColor="@color/white"
+            android:textColor="@color/ui_text"
             app:backgroundTint="#B6164D"/>
 
         <com.ammar.sharing.custom.ui.AdaptiveTextView

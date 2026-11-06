@@ -110,6 +110,7 @@ dependencies {
     implementation(libs.swiperefreshlayout) // needed to get CircularProgressDrawable
     implementation(libs.material)
     implementation(libs.glide)
+    implementation("com.google.zxing:core:3.5.3")
 
     // I don't like the new library catalog declaration it makes you write more stuff :)
     implementation("com.github.zcweng:switch-button:0.0.3@aar")

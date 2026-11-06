@@ -73,6 +73,11 @@ public final class AppAppearance {
   }
 
   private static void applyTree(View view, Typeface face, String key) {
+    if (view instanceof TextView toggle && view.getId() == R.id.MI_LanguageToggle) {
+      toggle.setTypeface(ResourcesCompat.getFont(view.getContext(), R.font.vazirmatn), Typeface.BOLD);
+      toggle.setTextSize(16);
+      view.setTag(R.id.tag_font_applied, key);
+    }
     if (view instanceof TextView text && !key.equals(view.getTag(R.id.tag_font_applied))) {
       int style = text.getTypeface() == null ? Typeface.NORMAL : text.getTypeface().getStyle();
       text.setTypeface(face, style);

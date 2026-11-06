@@ -27,7 +27,20 @@ The previous QR path forced version 2, used transparent/inverted modules, and ex
 
 ## Device verification
 
-Runtime checks and the real two-phone camera/network check are tracked separately from the build/tests. Desktop software-emulator timings do not establish phone performance.
+Android 9 / API 28 software-emulator acceptance:
+
+- Native home, file grid/thumbnails, and image preview/selection displayed correctly.
+- Grid/list changes retained selection; list rows showed size and modified date. The bottom sheet changed sorting field and direction.
+- Audio prepared and played/paused; a ten-second seek advanced the visible timeline. Video decoded in the native preview.
+- A partial app-name search worked. Three media files plus one app returned through Add to share and produced a home Selected badge of **4**.
+- The Persian switch persisted `fa`, translated controls and mirrored the home. The light palette kept text and action icons legible.
+- The displayed QR was independently decoded from a full-screen screenshot to exactly `https://192.168.232.2:2999`, matching the visible link.
+- Forwarded HTTPS requests returned 200 for the browser UI and `/get-app-config`, which reported `language=fa`, `dir=rtl`, `uiMode=light`.
+- All six requested font choices appeared; selecting Inter persisted its preference and rendered Persian UI through the normal font fallback.
+- The Persian/light home was inspected at a 320 dp effective width with controls accessible.
+- Runtime review found and corrected light-mode back-arrow and system-bar icon contrast.
+
+The real two-phone camera/network check remains a device acceptance step. Software-emulator timings do not establish physical-phone performance.
 
 ## Build
 

@@ -55,6 +55,10 @@ public class SharingApp extends Application {
                 android.view.View root = a.getWindow().getDecorView();
                 root.setLayoutDirection(android.text.TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()));
                 com.ammar.sharing.common.utils.AppAppearance.apply(root);
+                androidx.core.view.WindowInsetsControllerCompat bars = new androidx.core.view.WindowInsetsControllerCompat(a.getWindow(), root);
+                boolean dark = com.ammar.sharing.activities.MainActivity.MainActivity.sDarkMode;
+                bars.setAppearanceLightStatusBars(!dark);
+                bars.setAppearanceLightNavigationBars(!dark);
             }
             public void onActivityPaused(android.app.Activity a) {}
             public void onActivityStopped(android.app.Activity a) {}

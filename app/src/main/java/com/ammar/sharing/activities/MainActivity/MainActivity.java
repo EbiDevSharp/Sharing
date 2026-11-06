@@ -162,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         tutorialTV = dropDown.addItem(R.string.tutorial, R.drawable.icon_tutorial);
         settingsTV = dropDown.addItem(R.string.settings, R.drawable.icon_settings);
         dropDown.addItem(R.string.app_share, R.drawable.line_share).setOnClickListener(v -> viewPager.setCurrentItem(0));
+        dropDown.addItem(R.string.streaming, R.drawable.line_video).setOnClickListener(v -> startActivity(new Intent(this, com.ammar.sharing.activities.StreamingActivity.StreamingActivity.class)));
         apksInstallerTV = dropDown.addItem(R.string.apks_installer, R.drawable.icon_download);
 
         bottomAppBar = findViewById(R.id.BAB_BottomAppBar);

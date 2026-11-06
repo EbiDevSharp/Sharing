@@ -101,6 +101,7 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
             TextView pubKeySHA256TV = certInfoDialogLayout.findViewById(R.id.TV_PublicKeySHA256Fingerprint);
 
             SSLServerSocketManager.CertificateInfo certInfo = sslServerSocketManager.getCertInfo();
+            if (certInfo == null) return;
             certSHA256TV.setText(certInfo.certSha256fingerprint);
             pubKeySHA256TV.setText(certInfo.publicKeySha256fingerprint);
             certInfoDialog.show();
@@ -142,7 +143,9 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
         QRDialogView.findViewById(R.id.B_QRDialogOkButton)
                 .setOnClickListener((v) -> QRDialogRD.dismiss());
 
+        QRDialogView.findViewById(R.id.B_QRViewCert).setOnClickListener(button -> viewCertB.performClick());
         QRCodeB.setOnClickListener(button -> {
+            QRDialogView.findViewById(R.id.B_QRViewCert).setVisibility(Server.IS_HTTPS && SharedInfo.sIsWebServerOn ? View.VISIBLE : View.GONE);
             QRDialogRD.setBackgroundColor(res.getColor(sDarkMode ? R.color.dialogColorDark : R.color.dialogColorLight));
             QRDialogRD.show();
             setupQrCode();

@@ -50,7 +50,7 @@
       <TextView android:id="@+id/TV_NumberSelected" android:layout_width="24dp" android:layout_height="24dp" android:layout_gravity="top|end" android:background="@drawable/rounded_text_background" android:backgroundTint="@color/ui_badge" android:gravity="center" android:textColor="#FFFFFF" android:textSize="11sp" android:visibility="gone" />
     </FrameLayout>
   </LinearLayout>
-  <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="end" android:layout_marginTop="12dp">
+  <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="end" android:layout_marginTop="12dp" android:visibility="gone">
     <Button android:id="@+id/B_Stream" android:layout_width="wrap_content" android:layout_height="48dp" android:text="@string/streaming" android:textColor="@color/ui_muted" android:background="?attr/selectableItemBackgroundBorderless" />
     <Button android:id="@+id/B_ViewCert" android:layout_width="wrap_content" android:layout_height="48dp" android:text="@string/view_https_certificate" android:textColor="@color/ui_muted" android:background="?attr/selectableItemBackgroundBorderless" />
   </LinearLayout>

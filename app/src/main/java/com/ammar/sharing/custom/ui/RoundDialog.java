@@ -66,6 +66,7 @@ public class RoundDialog {
         Resources res = context.getResources();
         int color = ResourcesCompat.getColor(res, sDarkMode ? R.color.dialogColorDark : R.color.dialogColorLight, null);
         setBackgroundColor(color);
+        com.ammar.sharing.common.utils.AppAppearance.apply(view);
         alertDialog.show();
         cardView.addOnLayoutChangeListener((view, i, i1, i2, i3, i4, i5, i6, i7) -> {
             DisplayMetrics displayMetrics1 = context.getResources().getDisplayMetrics();

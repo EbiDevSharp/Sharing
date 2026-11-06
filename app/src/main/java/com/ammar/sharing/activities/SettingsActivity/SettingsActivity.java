@@ -40,7 +40,27 @@ public class SettingsActivity extends DefaultActivity {
         }
         setContentView(R.layout.activity_settings);
         initItems();
+        setupFontPicker();
         setItemsListeners();
+    }
+
+    private void setupFontPicker() {
+        Button fontButton = findViewById(R.id.B_Font);
+        String current = settingsPref.getString(com.ammar.sharing.common.utils.AppAppearance.PREF_FONT, "auto");
+        int selected = java.util.Arrays.asList(com.ammar.sharing.common.utils.AppAppearance.FONT_KEYS).indexOf(current);
+        fontButton.setText(getString(com.ammar.sharing.R.string.font) + " · " + com.ammar.sharing.common.utils.AppAppearance.FONT_NAMES[Math.max(0, selected)]);
+        fontButton.setOnClickListener(v -> {
+            androidx.appcompat.app.AlertDialog fontDialog = new androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(R.string.font)
+            .setSingleChoiceItems(com.ammar.sharing.common.utils.AppAppearance.FONT_NAMES, selected, (dialog, which) -> {
+                settingsPref.edit().putString(com.ammar.sharing.common.utils.AppAppearance.PREF_FONT, com.ammar.sharing.common.utils.AppAppearance.FONT_KEYS[which]).apply();
+                mShouldMainActivityRecreate = true;
+                dialog.dismiss();
+                recreate();
+            }).setNegativeButton(R.string.back, null).create();
+            fontDialog.setOnShowListener(dialog -> com.ammar.sharing.common.utils.AppAppearance.apply(fontDialog.getWindow().getDecorView()));
+            fontDialog.show();
+        });
     }
 
     private ConstraintLayout serverPortCL;

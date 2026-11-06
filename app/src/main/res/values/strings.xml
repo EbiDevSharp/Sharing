@@ -137,6 +137,7 @@
     <string name="error_no_files_added">No files were added to download</string>
     <!-- Language codes array don't translate -->
     <string-array name="lang_codes" translatable="false">
+        <item>fa</item>
         <item>ar</item>
         <item>en</item>
         <item>du</item>
@@ -148,6 +149,7 @@
     <!-- These are original language names. It's how the language call itself -->
     <!-- Must be the same order and length as lang_codes -->
     <string-array name="lang_names_original" translatable="false">
+        <item>فارسی</item>
         <item>العربية</item>
         <item>English</item>
         <item>Deutsch</item>
@@ -159,6 +161,7 @@
     <!-- These are the translated language names. It's how the current language call other languages -->
     <!-- Must be the same order and length as lang_codes -->
     <string-array name="lang_names_translated" translatable="false">
+        <item>@string/persian</item>
         <item>@string/arabic</item>
         <item>@string/english</item>
         <item>@string/german</item>

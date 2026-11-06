@@ -43,6 +43,7 @@ public class ApksInstallerActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
 
+        com.ammar.sharing.common.utils.AppAppearance.prepare(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apksinstaller);
         initItems();

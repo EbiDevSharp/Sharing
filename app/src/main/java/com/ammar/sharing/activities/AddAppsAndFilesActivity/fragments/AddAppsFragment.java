@@ -49,6 +49,7 @@ public class AddAppsFragment extends Fragment {
         mRecyclerView = root.findViewById(R.id.RV_AddAppsAndFiles);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), mSpanCount);
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setItemAnimator(null);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setAdapter(new AppsRecyclerAdapterPlaceholder());
 
@@ -56,7 +57,7 @@ public class AddAppsFragment extends Fragment {
     }
 
     private void setupViewModels() {
-        AppsViewModel appsViewModel = new ViewModelProvider(this).get(AppsViewModel.class);
+        AppsViewModel appsViewModel = new ViewModelProvider(requireActivity()).get(AppsViewModel.class);
         appsViewModel.loadData();
         appsViewModel.getAppsLiveData().observe(getViewLifecycleOwner(), (v) -> {
             AppsRecyclerAdapter adapter = new AppsRecyclerAdapter(v);

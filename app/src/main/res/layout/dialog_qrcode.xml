@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/TV_ServerLink"
@@ -29,8 +29,10 @@
 
     <android.widget.ImageView
         android:id="@+id/IV_QRCodeImage"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:background="#FFFFFF"
+        android:contentDescription="@string/scan_link"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
@@ -67,4 +69,5 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
 
+    <Button android:id="@+id/B_QRViewCert" android:layout_width="wrap_content" android:layout_height="40dp" android:layout_marginStart="8dp" android:layout_marginBottom="8dp" android:text="@string/view_https_certificate" android:textColor="@color/ui_cyan" android:background="@drawable/button_ok_bg" app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

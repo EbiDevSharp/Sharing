@@ -15,6 +15,7 @@ import com.ammar.sharing.R;
 public class DefaultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        com.ammar.sharing.common.utils.AppAppearance.prepare(this);
         super.onCreate(savedInstanceState);
         if (sDarkMode) {
             setTheme(R.style.AppThemeDark);

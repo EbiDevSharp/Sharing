@@ -21,6 +21,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="16dp" android:padding="18dp" android:background="@drawable/glass_card" android:orientation="vertical">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/tweaks" android:textSize="22sp" android:textStyle="bold" android:textColor="@color/ui_text"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/font_hint" android:textSize="14sp" android:textColor="@color/ui_muted"/>
+                <Button android:id="@+id/B_Font" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:layout_marginTop="12dp" android:text="@string/font"/>
+            </LinearLayout>
             <androidx.cardview.widget.CardView
                 android:id="@+id/CV_ServerPort"
                 android:layout_width="match_parent"
@@ -28,7 +33,7 @@
                 android:layout_margin="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardBackgroundColor="#66555555"
+                app:cardBackgroundColor="@color/ui_glass"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp">
 
@@ -51,7 +56,7 @@
                         android:textAlignment="viewStart"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:lightModeColor="#fff" />
+                        app:lightModeColor="@color/ui_text" />
 
                     <com.ammar.sharing.custom.ui.AdaptiveTextView
                         android:id="@+id/TV_ServerPortSub"
@@ -62,7 +67,7 @@
                         android:textAlignment="viewStart"
                         app:layout_constraintStart_toStartOf="@id/TV_ServerPort"
                         app:layout_constraintTop_toBottomOf="@id/TV_ServerPort"
-                        app:lightModeColor="#fff" />
+                        app:lightModeColor="@color/ui_text" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -74,7 +79,7 @@
                 android:layout_margin="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardBackgroundColor="#66555555"
+                app:cardBackgroundColor="@color/ui_glass"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp">
 
@@ -98,7 +103,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/SC_EnableHTTPSToggle"
-                        app:lightModeColor="#fff" />
+                        app:lightModeColor="@color/ui_text" />
 
                     <com.ammar.sharing.custom.ui.AdaptiveTextView
                         android:id="@+id/TV_EnableHTTPSSub"
@@ -110,7 +115,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/SC_EnableHTTPSToggle"
                         app:layout_constraintStart_toStartOf="@+id/TV_EnableHTTPS"
                         app:layout_constraintTop_toBottomOf="@id/TV_EnableHTTPS"
-                        app:lightModeColor="#fff" />
+                        app:lightModeColor="@color/ui_text" />
 
                     <com.suke.widget.SwitchButton
                         android:id="@+id/SC_EnableHTTPSToggle"
@@ -134,7 +139,7 @@
                 android:layout_margin="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardBackgroundColor="#66555555"
+                app:cardBackgroundColor="@color/ui_glass"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp">
 
@@ -158,7 +163,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/SC_UploadAllowToggle"
-                        app:lightModeColor="#fff" />
+                        app:lightModeColor="@color/ui_text" />
 
                     <com.ammar.sharing.custom.ui.AdaptiveTextView
                         android:id="@+id/TV_SettingsUploadAllowSub"
@@ -170,7 +175,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/SC_UploadAllowToggle"
                         app:layout_constraintStart_toStartOf="@+id/TV_SettingsUploadAllow"
                         app:layout_constraintTop_toBottomOf="@id/TV_SettingsUploadAllow"
-                        app:lightModeColor="#fff" />
+                        app:lightModeColor="@color/ui_text" />
 
                     <com.suke.widget.SwitchButton
                         android:id="@+id/SC_UploadAllowToggle"
@@ -194,7 +199,7 @@
                 android:layout_margin="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardBackgroundColor="#66555555"
+                app:cardBackgroundColor="@color/ui_glass"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp">
 
@@ -218,7 +223,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/SC_UsersBlockToggle"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:lightModeColor="#fff" />
+                        app:lightModeColor="@color/ui_text" />
 
                     <com.ammar.sharing.custom.ui.AdaptiveTextView
                         android:id="@+id/TV_SettingsUserBlockSub"
@@ -230,7 +235,7 @@
                         android:text="@string/block_users_desc"
                         android:textSize="@dimen/small_text"
                         android:textAlignment="viewStart"
-                        app:lightModeColor="#fff" />
+                        app:lightModeColor="@color/ui_text" />
 
                     <com.suke.widget.SwitchButton
                         android:id="@+id/SC_UsersBlockToggle"
@@ -254,7 +259,7 @@
                 android:layout_margin="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardBackgroundColor="#66555555"
+                app:cardBackgroundColor="@color/ui_glass"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp">
 
@@ -278,7 +283,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:lightModeColor="#fff" />
+                        app:lightModeColor="@color/ui_text" />
 
                     <com.ammar.sharing.custom.ui.AdaptiveTextView
                         android:id="@+id/TV_SettingsLanguageSub"
@@ -290,7 +295,7 @@
                         android:text="@string/languages_desc"
                         android:textSize="@dimen/small_text"
                         android:textAlignment="viewStart"
-                        app:lightModeColor="#fff" />
+                        app:lightModeColor="@color/ui_text" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -308,7 +313,7 @@
                 android:layout_margin="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardBackgroundColor="#66555555"
+                app:cardBackgroundColor="@color/ui_glass"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp">
 
@@ -332,7 +337,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/SC_DebugModeToggle"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:lightModeColor="#fff" />
+                        app:lightModeColor="@color/ui_text" />
 
                     <com.ammar.sharing.custom.ui.AdaptiveTextView
                         android:id="@+id/TV_SettingsDebugModeSub"
@@ -344,7 +349,7 @@
                         android:text="@string/debug_mode_desc"
                         android:textSize="@dimen/small_text"
                         android:textAlignment="viewStart"
-                        app:lightModeColor="#fff" />
+                        app:lightModeColor="@color/ui_text" />
 
                     <com.suke.widget.SwitchButton
                         android:id="@+id/SC_DebugModeToggle"

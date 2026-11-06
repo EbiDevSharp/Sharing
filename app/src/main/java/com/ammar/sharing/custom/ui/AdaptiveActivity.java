@@ -21,6 +21,7 @@ public abstract class AdaptiveActivity extends AppCompatActivity {
             getWindow().setBackgroundDrawableResource(R.drawable.gradient_background_light);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+        com.ammar.sharing.common.utils.AppAppearance.prepare(this);
         super.onCreate(savedInstanceState);
     }
 }

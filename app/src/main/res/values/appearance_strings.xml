@@ -1,0 +1,20 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <string name="share_subtitle">Send files without internet</string>
+  <string name="toggle_server">Start or stop server</string>
+  <string name="status_off">●  SERVER OFF</string>
+  <string name="status_on">●  SERVER ON</string>
+  <string name="start_sharing">Tap to start sharing</string>
+  <string name="stop_sharing">Stop sharing</string>
+  <string name="pick_items_hint">Pick items below, then power on.</string>
+  <string name="sharing_live">Sharing is live</string>
+  <string name="sharing_live_hint">Scan the link on any device on the same Wi-Fi.</string>
+  <string name="scan_link">Scan or open the link</string>
+  <string name="tweaks">Tweaks</string>
+  <string name="font">Font</string>
+  <string name="font_hint">Choose your app font. Auto adapts to the language.</string>
+  <string name="persian">Persian</string>
+  <string name="search_apps">Search apps</string>
+  <string name="no_apps_found">No matching apps</string>
+  <string name="same_network_hint">Both devices must use the same Wi-Fi or hotspot.</string>
+  <string name="add_apps_count">Add %1$d apps</string>
+</resources>

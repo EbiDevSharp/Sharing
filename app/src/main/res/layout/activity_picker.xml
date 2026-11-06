@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:fitsSystemWindows="true" android:orientation="vertical" android:paddingHorizontal="12dp">
+    <androidx.appcompat.widget.Toolbar android:id="@+id/TB_Toolbar" android:layout_width="match_parent" android:layout_height="56dp" android:background="@android:color/transparent" app:titleTextColor="@color/ui_text" app:navigationIcon="@drawable/ic_back"/>
+    <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:scrollbars="none" android:fillViewport="true">
+        <LinearLayout android:id="@+id/PickerTabs" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal"/>
+    </HorizontalScrollView>
+    <androidx.appcompat.widget.AppCompatEditText android:id="@+id/PickerSearch" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginTop="8dp" android:layout_marginBottom="8dp" android:background="@drawable/glass_card" android:paddingHorizontal="16dp" android:singleLine="true" android:hint="@string/search" android:textSize="14sp" android:drawableStart="@drawable/icon_search" android:drawablePadding="8dp" android:textColor="@color/ui_text" android:textColorHint="@color/ui_muted" android:inputType="text"/>
+    <TextView android:id="@+id/PickerPath" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="6dp" android:textColor="@color/ui_muted" android:textSize="12sp" android:singleLine="true" android:ellipsize="start"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:gravity="center_vertical" android:orientation="horizontal">
+        <Button android:id="@+id/PickerSort" android:layout_width="0dp" android:layout_weight="1" android:layout_height="48dp" android:text="@string/sort_by" android:textSize="12sp" android:textAllCaps="false" android:textColor="@color/ui_text" android:background="@drawable/glass_card"/>
+        <Button android:id="@+id/PickerGrid" android:layout_width="64dp" android:layout_height="48dp" android:layout_marginStart="8dp" android:text="@string/grid_view" android:textColor="@color/ui_cyan" android:textSize="12sp" android:background="@drawable/glass_card"/>
+        <Button android:id="@+id/PickerList" android:layout_width="64dp" android:layout_height="48dp" android:text="@string/list_view" android:textColor="@color/ui_muted" android:textSize="12sp" android:background="@drawable/glass_card"/>
+    </LinearLayout>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+        <androidx.recyclerview.widget.RecyclerView android:id="@+id/PickerRecycler" android:layout_width="match_parent" android:layout_height="match_parent" android:paddingTop="8dp" android:paddingBottom="8dp" android:clipToPadding="false"/>
+        <TextView android:id="@+id/PickerEmpty" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:padding="24dp" android:textColor="@color/ui_muted" android:text="@string/no_files_found"/>
+        <ProgressBar android:id="@+id/PickerLoading" android:layout_width="48dp" android:layout_height="48dp" android:layout_gravity="center" android:visibility="gone"/>
+    </FrameLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="72dp" android:layout_marginVertical="10dp" android:padding="10dp" android:background="@drawable/floating_nav" android:gravity="center_vertical" android:orientation="horizontal">
+        <TextView android:id="@+id/PickerCount" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:paddingHorizontal="8dp" android:textColor="@color/ui_text" android:textSize="14sp" android:textStyle="bold"/>
+        <Button android:id="@+id/PickerAdd" android:layout_width="wrap_content" android:layout_height="48dp" android:minWidth="132dp" android:background="@drawable/power_gradient" android:text="@string/add_to_share" android:textColor="#101426" android:textSize="13sp" android:textStyle="bold" android:textAllCaps="false"/>
+    </LinearLayout>
+</LinearLayout>

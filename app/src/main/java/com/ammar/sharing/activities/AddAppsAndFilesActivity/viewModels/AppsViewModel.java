@@ -1,75 +1,70 @@
 package com.ammar.sharing.activities.AddAppsAndFilesActivity.viewModels;
 
+import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-
+import android.os.Handler;
+import android.os.Looper;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
 import com.ammar.sharing.activities.AddAppsAndFilesActivity.data.AppData;
-import com.ammar.sharing.common.utils.Utils;
-
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class AppsViewModel extends ViewModel {
-    private static final MutableLiveData<AppData[]> mListedApps = new MutableLiveData<>();
-    private static final MutableLiveData<Boolean> mIsLoading = new MutableLiveData<>(true);
-    private static boolean dataLoaded = false;
+public class AppsViewModel extends AndroidViewModel {
+    private static final ExecutorService SCANNER = Executors.newSingleThreadExecutor();
+    // Only labels are shared, never mutable picker selection or full-resolution drawables.
+    private static final Map<String, String[]> LABELS = new HashMap<>();
+    private final MutableLiveData<AppData[]> apps = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> loading = new MutableLiveData<>(true);
+    private boolean started;
+    private volatile boolean cleared;
 
-    public LiveData<AppData[]> getAppsLiveData() {
-        return mListedApps;
-    }
-    public LiveData<Boolean> getIsLoadingLiveData() {
-        return mIsLoading;
-    }
-
-    public AppsViewModel() {
-        loadData();
-    }
-
+    public AppsViewModel(@NonNull Application application) { super(application); loadData(); }
+    public LiveData<AppData[]> getAppsLiveData() { return apps; }
+    public LiveData<Boolean> getIsLoadingLiveData() { return loading; }
     public void loadData() {
-        if (!dataLoaded) {
-            loadAppsData();
-            dataLoaded = true;
-        }
-    }
-
-    public void reset() {
-        mIsLoading.setValue(true);
-        dataLoaded = false;
-    }
-
-    private void loadAppsData() {
-        new Thread(() -> {
-            ArrayList<ApplicationInfo> userApps = new ArrayList<>(30);
-            int flags = PackageManager.GET_META_DATA |
-                    PackageManager.GET_SHARED_LIBRARY_FILES |
-                    PackageManager.GET_UNINSTALLED_PACKAGES;
-
-            PackageManager pm = Utils.getPm();
-            List<ApplicationInfo> applications = pm.getInstalledApplications(flags);
-            for (ApplicationInfo appInfo : applications) {
-                if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 1) {
-                    userApps.add(appInfo);
+        if (started) return;
+        started = true;
+        SCANNER.execute(() -> {
+            ArrayList<AppData> result = new ArrayList<>();
+            PackageManager pm = getApplication().getPackageManager();
+            try {
+                Map<String, String[]> currentLabels = new HashMap<>();
+                // No metadata, shared libraries, or uninstalled packages are needed for APK sharing.
+                for (ApplicationInfo info : pm.getInstalledApplications(0)) {
+                    if ((info.flags & ApplicationInfo.FLAG_SYSTEM) != 0) continue;
+                    try {
+                        String[] cached = LABELS.get(info.packageName);
+                        String sourceKey = info.sourceDir + java.util.Locale.getDefault().toLanguageTag();
+                        String label = cached != null && sourceKey.equals(cached[0]) ? cached[1] : pm.getApplicationLabel(info).toString();
+                        currentLabels.put(info.packageName, new String[]{sourceKey, label});
+                        AppData data = new AppData(info.packageName, info.splitPublicSourceDirs != null, label, info.sourceDir);
+                        if (info.splitPublicSourceDirs != null) for (String split : info.splitPublicSourceDirs) {
+                            try { android.system.StructStat stat = android.system.Os.stat(split); data.size += stat.st_size; data.modified = Math.max(data.modified, stat.st_mtime * 1000); }
+                            catch (android.system.ErrnoException ignored) { /* A split may disappear during an app update. */ }
+                        }
+                        result.add(data);
+                    } catch (RuntimeException ignored) { /* Package can disappear during enumeration. */ }
                 }
-            }
-            AppData[] appsData = new AppData[userApps.size()];
-
-            for (int i = 0; i < userApps.size(); i++) {
-                String packageName = userApps.get(i).packageName;
-                boolean hasSplits = userApps.get(i).splitPublicSourceDirs != null;
-                String appLabel = pm.getApplicationLabel(userApps.get(i)).toString();
-                Drawable appIcon = userApps.get(i).loadIcon(pm);
-                // add app data
-                appsData[i] = new AppData(packageName, hasSplits, appLabel, appIcon);
-            }
-
-            mIsLoading.postValue(false);
-            mListedApps.postValue(appsData);
-        }).start();
+                LABELS.clear(); LABELS.putAll(currentLabels);
+            } catch (RuntimeException ignored) { /* Show an empty list instead of a permanent spinner. */ }
+            java.util.Collections.sort(result, (a, b) -> a.searchKey.compareTo(b.searchKey));
+            new Handler(Looper.getMainLooper()).post(() -> {
+                if (cleared) return;
+                apps.setValue(result.toArray(new AppData[0]));
+                loading.setValue(false);
+            });
+        });
     }
-
+    public void reset() {
+        AppData[] current = apps.getValue();
+        if (current != null) for (AppData app : current) app.isChecked = false;
+    }
+    @Override protected void onCleared() { cleared = true; }
 }

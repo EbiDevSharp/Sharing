@@ -1,14 +1,10 @@
 package com.ammar.sharing.activities.MainActivity;
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -17,11 +13,8 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -35,12 +28,12 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.ammar.sharing.R;
+import com.ammar.sharing.common.utils.AppAppearance;
 import com.ammar.sharing.activities.ApksInstallerActivity.ApksInstallerActivity;
 import com.ammar.sharing.activities.ChangeLogActivity.ChangeLogActivity;
 import com.ammar.sharing.activities.MainActivity.adaptersR.ShareAdapter.viewHolders.HeaderViewHolder;
@@ -58,7 +51,6 @@ import com.ammar.sharing.network.websocket.sessions.MessagesWSSession;
 import com.ammar.sharing.services.ServerService;
 import com.ammar.sharing.BuildConfig;
 
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.lang.ref.WeakReference;
@@ -68,7 +60,6 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private CoordinatorLayout layout;
-    private ImageView themeChangeIV;
     private Toolbar toolbar;
     private View changeThemeMI;
     private View threeDotsMI;
@@ -76,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private View settingsTV;
     private View apksInstallerTV;
     private ViewPager2 viewPager;
-    private BottomAppBar bottomAppBar;
+    private View bottomAppBar;
     private BottomNavigationView bottomNavigationView;
     private AlertDialog errorDialogAD;
 
@@ -86,12 +77,13 @@ public class MainActivity extends AppCompatActivity {
 
     public static boolean sDarkMode = true;
     public static boolean isFirstRun = false;
-    public static Insets systemBarsPaddings;
+    public static Insets systemBarsPaddings = Insets.NONE;
     public final int REQUEST_CODE_STORAGE_PERMISSION = 2;
     public final int REQUEST_CODE_NOTIFICATION_PERMISSION = 3;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        AppAppearance.prepare(this);
         prepareActivity();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -159,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        themeChangeIV = findViewById(R.id.IV_ThemeChange);
         toolbar = findViewById(R.id.TB_Toolbar);
         changeThemeMI = findViewById(R.id.MI_ThemeToggle);
         threeDotsMI = findViewById(R.id.MI_PopupMenu);
@@ -170,12 +161,14 @@ public class MainActivity extends AppCompatActivity {
 
         tutorialTV = dropDown.addItem(R.string.tutorial, R.drawable.icon_tutorial);
         settingsTV = dropDown.addItem(R.string.settings, R.drawable.icon_settings);
+        dropDown.addItem(R.string.app_share, R.drawable.line_share).setOnClickListener(v -> viewPager.setCurrentItem(0));
+        dropDown.addItem(R.string.streaming, R.drawable.line_video).setOnClickListener(v -> startActivity(new Intent(this, com.ammar.sharing.activities.StreamingActivity.StreamingActivity.class)));
         apksInstallerTV = dropDown.addItem(R.string.apks_installer, R.drawable.icon_download);
 
         bottomAppBar = findViewById(R.id.BAB_BottomAppBar);
         bottomNavigationView = findViewById(R.id.BottomNavView);
         viewPager = findViewById(R.id.MainActivityFragmentContainer);
-        bottomNavigationView.setSelectedItemId(R.id.B_AppShare);
+        bottomNavigationView.setSelectedItemId(R.id.B_BrowserShare);
         bottomAppBar.setOnApplyWindowInsetsListener(null);
         bottomAppBar.setPadding(0,0,0,0);
         bottomNavigationView.setOnApplyWindowInsetsListener(null);
@@ -183,6 +176,8 @@ public class MainActivity extends AppCompatActivity {
 
         MainViewPagerAdapter viewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
         viewPager.setAdapter(viewPagerAdapter);
+        viewPager.setCurrentItem(1, false);
+        viewPager.setUserInputEnabled(false);
 
         // this dialog shows exceptions. it's not shown when app is built for release
         errorDialogAD = new AlertDialog.Builder(this)
@@ -191,32 +186,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setItemsListener() {
-        changeThemeMI.setOnTouchListener((view, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                view.performClick();
-                int[] pos = new int[2];
-                pos[0] = (int) event.getRawX();
-                pos[1] = (int) event.getRawY();
-
-                changeTheme(pos);
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.MI_LanguageToggle) {
+                String language = Locale.getDefault().getLanguage();
+                String next = "fa".equals(language) ? "en" : "fa";
+                settingsPref.edit().putString(Consts.PREF_FIELD_LANG, next).apply();
+                Utils.setLocale(this, next);
+                UsersNotifier.notifyUsersOfUIChange();
+                recreate();
+                return true;
             }
-            return true;
+            return false;
         });
+        changeThemeMI.setOnClickListener(view -> changeTheme());
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            private MenuItem prevMenuItem;
 
             @Override
             public void onPageSelected(int position) {
-                if (prevMenuItem != null) {
-                    prevMenuItem.setChecked(false);
-                } else {
-                    bottomNavigationView.getMenu().getItem(0).setChecked(false);
-                }
-                Log.d("page", "onPageSelected: " + position);
-                bottomNavigationView.getMenu().getItem(position).setChecked(true);
-                prevMenuItem = bottomNavigationView.getMenu().getItem(position);
-
+                bottomNavigationView.getMenu().findItem(R.id.B_BrowserShare).setChecked(true);
                 // app share is 0, browser share is 1
                 // set title
                 switch (position) {
@@ -234,9 +222,9 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.B_AppShare) {
-                viewPager.setCurrentItem(0);
-                return true;
+            if (id == R.id.B_Settings) {
+                settingsActivityLauncher.launch(null);
+                return false;
             } else if (id == R.id.B_BrowserShare) {
                 viewPager.setCurrentItem(1);
                 return true;
@@ -355,43 +343,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void changeTheme(int[] pos) {
+    private void changeTheme() {
         sDarkMode = !sDarkMode;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (themeChangeIV.getVisibility() == View.VISIBLE) {
-                return;
-            }
-
-            int w = layout.getMeasuredWidth();
-            int h = layout.getMeasuredHeight();
-
-            Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-
-            layout.draw(canvas);
-
-            syncTheme(sDarkMode);
-
-            themeChangeIV.setImageBitmap(bitmap);
-            themeChangeIV.setVisibility(View.VISIBLE);
-
-            float finalRadius = (float) Math.max(Math.sqrt((w - pos[0]) * (w - pos[0]) + (h - pos[1]) * (h - pos[1])), Math.sqrt(pos[0] * pos[0] + (h - pos[1]) * (h - pos[1])));
-            Log.d("MYLOG", String.format(Locale.ENGLISH, "Location: (%d, %d)", pos[0], pos[1]));
-            Animator anim = ViewAnimationUtils.createCircularReveal(layout, pos[0], pos[1], 0, finalRadius);
-            anim.setDuration(400);
-
-            anim.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    themeChangeIV.setImageDrawable(null);
-                    themeChangeIV.setVisibility(View.GONE);
-                    setNavbarTheme(sDarkMode);
-                }
-            });
-            anim.start();
-        } else syncTheme(sDarkMode);
-
-        // notify browsers
+        settingsPref.edit().putBoolean(Consts.PREF_FIELD_IS_DARK, sDarkMode).apply();
+        AppCompatDelegate.setDefaultNightMode(sDarkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
         UsersNotifier.notifyUsersOfUIChange();
     }
 
@@ -412,42 +367,23 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void syncTheme(boolean dark) {
-        int[][] states = new int[][]{new int[]{android.R.attr.state_checked}, new int[]{-android.R.attr.state_checked}};
-        final int ColorPrimary = getResources().getColor(R.color.colorPrimary);
-
-        if (dark) {
-            layout.setBackgroundResource(R.drawable.gradient_background_dark);
-            DrawableCompat.setTint(toolbar.getOverflowIcon(), getResources().getColor(R.color.white));
-            bottomAppBar.setBackgroundTint(ColorStateList.valueOf(getResources().getColor(R.color.bottomBarColorDark)));
-
-            ColorStateList stateList = new ColorStateList(states, new int[]{ColorPrimary, getResources().getColor(R.color.text_color_light)});
-            bottomNavigationView.setItemIconTintList(stateList);
-            bottomNavigationView.setItemTextColor(stateList);
-
-            toolbar.getMenu().getItem(0).setIcon(R.drawable.icon_sun);
-            toolbar.setPopupTheme(R.style.AppThemeDark);
-        } else {
-            layout.setBackgroundResource(R.drawable.gradient_background_light);
-            DrawableCompat.setTint(toolbar.getOverflowIcon(), getResources().getColor(R.color.black));
-
-            bottomAppBar.setBackgroundTint(ColorStateList.valueOf(getResources().getColor(R.color.bottomBarColorLight)));
-
-            ColorStateList stateList = new ColorStateList(states, new int[]{ColorPrimary, getResources().getColor(R.color.text_color_dark)});
-            bottomNavigationView.setItemIconTintList(stateList);
-            bottomNavigationView.setItemTextColor(stateList);
-
-            toolbar.getMenu().getItem(0).setIcon(R.drawable.icon_moon);
-
+        layout.setBackgroundResource(dark ? R.drawable.gradient_background_dark : R.drawable.gradient_background_light);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.ui_text));
+        toolbar.setPopupTheme(dark ? R.style.AppThemeDark : R.style.AppTheme);
+        toolbar.getMenu().findItem(R.id.MI_LanguageToggle).setTitle("fa".equals(Locale.getDefault().getLanguage()) ? "EN" : "فا");
+        toolbar.getMenu().findItem(R.id.MI_ThemeToggle).setIcon(dark ? R.drawable.icon_sun : R.drawable.icon_moon);
+        ColorStateList foreground = ColorStateList.valueOf(getResources().getColor(R.color.ui_text));
+        androidx.core.view.MenuItemCompat.setIconTintList(toolbar.getMenu().findItem(R.id.MI_ThemeToggle), foreground);
+        androidx.core.view.MenuItemCompat.setIconTintList(toolbar.getMenu().findItem(R.id.MI_PopupMenu), foreground);
+        bottomAppBar.setBackgroundResource(R.drawable.floating_nav);
+        int[][] states = {new int[]{android.R.attr.state_checked}, new int[]{-android.R.attr.state_checked}};
+        ColorStateList navigationColors = new ColorStateList(states, new int[]{getResources().getColor(R.color.ui_cyan), getResources().getColor(R.color.ui_muted)});
+        bottomNavigationView.setItemIconTintList(navigationColors);
+        bottomNavigationView.setItemTextColor(navigationColors);
+        for (WeakReference<AdaptiveTextView> reference : AdaptiveTextView.textViews) {
+            AdaptiveTextView text = reference.get();
+            if (text != null) text.setDark(dark);
         }
-
-
-        for (WeakReference<AdaptiveTextView> i : AdaptiveTextView.textViews) {
-            AdaptiveTextView textViewRef = i.get();
-            if (textViewRef != null) {
-                textViewRef.setDark(dark);
-            }
-        }
-
         AdaptiveDropDown.setDarkAll(dark);
     }
 

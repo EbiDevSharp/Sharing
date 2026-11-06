@@ -14,6 +14,7 @@ import com.ammar.sharing.activities.AddAppsAndFilesActivity.adaptersR.Searchable
 public class SearchBarViewHolder extends RecyclerView.ViewHolder {
     public SearchBarViewHolder(@NonNull View itemView, SearchableRecyclerAdapter adapter) {
         super(itemView);
+        com.ammar.sharing.common.utils.AppAppearance.apply(itemView);
         AppCompatEditText searchInput = itemView.findViewById(R.id.ET_SearchInput);
         searchInput.addTextChangedListener(new TextWatcher() {
             @Override

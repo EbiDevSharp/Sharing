@@ -24,6 +24,7 @@ public class AdaptiveTextView extends androidx.appcompat.widget.AppCompatTextVie
     private void addTextView() {
         AdaptiveTextView.textViews.addLast(new WeakReference<>(this));
         setTextColor( sDarkMode ? darkModeColor : lightModeColor );
+        com.ammar.sharing.common.utils.AppAppearance.apply(this);
     }
 
     public AdaptiveTextView(@NonNull Context context) {

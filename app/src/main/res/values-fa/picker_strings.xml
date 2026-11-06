@@ -1,0 +1,22 @@
+<resources>
+<string name="grid_view">شبکه‌ای</string>
+<string name="list_view">فهرستی</string>
+<string name="date_modified">تاریخ تغییر</string>
+<string name="size">حجم</string>
+<string name="name">نام</string>
+<string name="type">نوع</string>
+<string name="ascending">صعودی · قدیمی‌تر / کوچک‌تر اول</string>
+<string name="descending">نزولی · جدیدتر / بزرگ‌تر اول</string>
+<string name="select_all">انتخاب همه</string>
+<string name="add_to_share">افزودن به اشتراک  ✓</string>
+<string name="select_this_file">انتخاب این فایل</string>
+<string name="folder">پوشه</string>
+<string name="select_named">انتخاب %1$s</string>
+<string name="deselect_named">لغو انتخاب %1$s</string>
+<string name="rewind_ten">۱۰ ثانیه عقب</string>
+<string name="forward_ten">۱۰ ثانیه جلو</string>
+<string name="play">پخش</string>
+<string name="pause">توقف</string>
+<string name="loading_preview">در حال آماده‌سازی پیش‌نمایش…</string>
+<string name="preview_unavailable">پیش‌نمایش این فایل در دسترس نیست؛ همچنان می‌توانید آن را انتخاب کنید.</string>
+</resources>

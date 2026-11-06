@@ -2,24 +2,30 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:fontFamily">@raw/almarai_regular</item>
+        <item name="fontFamily">@font/plus_jakarta_sans</item>
+        <item name="viewInflaterClass">com.ammar.sharing.custom.ui.SharingViewInflater</item>
         <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="android:actionMenuTextColor">@color/defaultTextColor</item>
+        <item name="android:actionMenuTextColor">@color/ui_text</item>
+        <item name="android:textColorPrimary">@color/ui_text</item>
+        <item name="android:textColorSecondary">@color/ui_muted</item>
         <item name="popupMenuBackground">@color/black</item>
         <item name="materialButtonStyle">@style/SharingAppButton</item>
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
     <style name="AppThemeDark" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="android:fontFamily">@raw/almarai_regular</item>
+        <item name="fontFamily">@font/plus_jakarta_sans</item>
+        <item name="viewInflaterClass">com.ammar.sharing.custom.ui.SharingViewInflater</item>
         <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="android:actionMenuTextColor">@color/defaultTextColor</item>
+        <item name="android:actionMenuTextColor">@color/ui_text</item>
+        <item name="android:textColorPrimary">@color/ui_text</item>
+        <item name="android:textColorSecondary">@color/ui_muted</item>
         <item name="popupMenuBackground">@color/white</item>
         <item name="materialButtonStyle">@style/SharingAppButton</item>
         <item name="colorAccent">@color/colorPrimary</item>

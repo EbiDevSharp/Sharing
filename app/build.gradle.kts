@@ -57,6 +57,10 @@ android {
         versionCode = VERSION_NUMBER
         versionName = VERSION_NAME
 
+        ndk {
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64")
+        }
+
         vectorDrawables.useSupportLibrary = true
         externalNativeBuild {
             cmake {

@@ -19,7 +19,7 @@ The previous QR path forced version 2, used transparent/inverted modules, and ex
 
 ## Automated validation
 
-- Android debug build: passed for arm64-v8a, armeabi-v7a and x86_64.
+- Android debug build: passed for arm64-v8a, armeabi-v7a and x86_64. Packaging is restricted to these built native ABIs so a dependency-only x86 library cannot advertise unsupported x86 execution.
 - JVM tests: 15 passed, 0 failed (5 QR round trips/validation, 4 search cases, 4 sorting cases and 2 existing tests).
 - Focused Android lint (`./gradlew :app:lintDebug -I scripts/lint-focused.gradle`): passed with no findings for NewApi, StringFormatMatches, ResourceType, WrongConstant, CheckResult, InvalidId and UnknownId.
 - Full-project lint initially reports unrelated missing translations and an obsolete manifest activity registration. The initial run also caught API-23 incompatibilities in new code and an existing Russian count-format mismatch; these were corrected. The focused check does not suppress those project-wide existing debts.
